@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 st.header("Gemini Vision 👁️")
-st.text("Provide an image and a prompt which instructs the AI on what to do with the image. The AI will then generate an output based on the prompt.")
+st.write("Provide an image and a prompt which instructs the AI on what to do with the image. The AI will then generate an output based on the prompt.")
 
 if 'image' not in st.session_state:
     st.session_state.image = None
