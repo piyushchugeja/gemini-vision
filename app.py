@@ -15,6 +15,19 @@ st.set_page_config(
     initial_sidebar_state = "collapsed",
 )
 
+st.markdown(
+    """
+    <style>
+        div[data-testid="column"]:nth-of-type(2) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 st.header("Gemini Vision 👁️")
 st.write("Provide an image and a prompt which instructs the AI on what to do with the image. The AI will then generate an output based on the prompt.")
 
@@ -25,11 +38,16 @@ col1, col2 = st.columns(2)
 
 with col1:
     img_raw = st.file_uploader("Upload your image here", type=["png", "jpg", "jpeg"])
+    prompt = st.text_area("Enter your prompt here", placeholder="e.g. Identify the main object in the image and write a blog on it")
+    button = st.button("Launch")
     
 with col2:
-    prompt = st.text_area("Enter your prompt here", placeholder="e.g. Identify the main object in the image and write a blog on it")
+    if img_raw:
+        st.image(img_raw, use_column_width=True)
+    else:
+        st.subheader("Your image will be displayed here")
+    
 
-button = st.button("Launch")
 
 if button:
     with st.spinner("Processing..."):
@@ -40,7 +58,6 @@ if button:
                     contents = [prompt, st.session_state.image]
                 )
                 st.success(response.text)
-                st.image(st.session_state.image, use_column_width=True)
             elif not img_raw:
                 st.error("Please upload an image.")
                 st.session_state.image = None
